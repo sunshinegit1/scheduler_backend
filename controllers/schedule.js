@@ -17,9 +17,9 @@ exports.createSchedule = async (req, res) => {
       {
         emp_id: data.emp_id,
         loc_id: data.loc_id,
-        sch_time: data.sch_time,
+        start_time: data.start_time,
         sch_hours: data.sch_hours,
-        est_hours: data.est_hours        
+        end_time: data.end_time        
       },
     ],
     (err, result) => {
@@ -43,9 +43,9 @@ exports.updateSchedule = async (req, res) => {
       {
         emp_id: data.emp_id,
         loc_id: data.loc_id,
-        sch_time: data.sch_time,
+        start_time: data.start_time,
         sch_hours: data.sch_hours,
-        est_hours: data.est_hours,
+        end_time: data.end_time,
         status: data.status,
         updated_date: new Date()
       },
