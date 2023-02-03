@@ -23,6 +23,7 @@ exports.createSchedule = async (req, res) => {
       },
     ],
     (err, result) => {
+      console.log("==Create==", err);
       if (!err) {
         res
           .status(200)
