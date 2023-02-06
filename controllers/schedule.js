@@ -88,3 +88,20 @@ exports.deleteschedule = async (req, res) => {
     }
   );
 };
+
+exports.getSchedulesByEmpId = async (req, res) => {
+  data = req.body;
+  db.query(
+    "select s.*, l.*,e.* from schedule s, location l, employee e where s.loc_id=l.loc_id and s.emp_id=e.emp_id and s.emp_id = ?",
+    [
+      req.params.id
+    ],
+    (err, result) => {
+      console.log("Error", err);
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
+        else res.status(200).json({ message: "Employee schedules not found " });
+      } else res.status(401).json({ status: "failed" });
+    }
+  );
+};
