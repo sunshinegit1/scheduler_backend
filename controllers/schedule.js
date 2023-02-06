@@ -1,7 +1,7 @@
 const db = require("../config/connection");
 
 exports.getSchedules = async (req, res) => {
-  db.query("select s.*, l.color from schedule s, location l where s.loc_id=l.loc_id", (err, result, fiels) => {
+  db.query("select s.*, l.loc_name, l.color from schedule s, location l where s.loc_id=l.loc_id", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(200).json({ message: "Schedules not found" });
