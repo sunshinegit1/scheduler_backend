@@ -18,7 +18,8 @@ exports.createLocation = async (req, res) => {
         loc_name: data.loc_name,
         loc_address: data.loc_address,
         loc_lat: data.loc_lat,
-        loc_lon: data.loc_lon,        
+        loc_lon: data.loc_lon, 
+        color: data.color       
       },
     ],
     (err, result) => {
@@ -44,6 +45,7 @@ exports.updateLocation = async (req, res) => {
         loc_address: data.loc_address,
         loc_lat: data.loc_lat,
         loc_lon: data.loc_lon,
+        color: data.color,
         status: data.status,
         updated_date: new Date()
       },
