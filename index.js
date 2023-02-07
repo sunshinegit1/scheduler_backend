@@ -5,6 +5,7 @@ const connection = require('./config/connection');
 const empRoutes = require('./routes/empRoutes');
 const locRoutes = require('./routes/locRoutes');
 const schRoutes = require('./routes/schRoutes');
+const logsRoutes = require('./routes/logsRoutes');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/emp', empRoutes);
 app.use('/loc', locRoutes);
 app.use('/sch', schRoutes);
+app.use('/logs', logsRoutes);
 
 module.exports = app;
 
