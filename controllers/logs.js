@@ -88,7 +88,7 @@ exports.getLogsByEmpId = async (req, res) => {
 exports.getLogsBySchId = async (req, res) => {
   data = req.body;
   db.query(
-    "SELECT * FROM `logs` WHERE sch=?",
+    "SELECT * FROM `logs` WHERE sch_id=?",
     [
       req.params.id
     ],
