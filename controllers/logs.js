@@ -21,7 +21,8 @@ exports.createLogs = async (req, res) => {
         emp_id: data.emp_id,
         device_lat: data.device_lat,
         device_lon: data.device_lon,
-        cur_time: new Date()
+        cur_time: new Date(),
+        status: data.status
       },
     ],
     (err, result) => {
@@ -47,7 +48,8 @@ exports.updateLogs = async (req, res) => {
         emp_id: data.emp_id,
         device_lat: data.device_lat,
         device_lon: data.device_lon,
-        cur_time: new Date()
+        cur_time: new Date(),
+        status: data.status
       },
       req.params.id,
     ],
@@ -60,6 +62,25 @@ exports.updateLogs = async (req, res) => {
             message: "Logs updated successfully",
           });
       else res.status(401).json({ status: "failed" });
+    }
+  );
+};
+
+
+
+exports.getLogsByEmpId = async (req, res) => {
+  data = req.body;
+  db.query(
+    "SELECT * FROM `logs` WHERE emp_id=? order BY log_id DESC limit 1",
+    [
+      req.params.id
+    ],
+    (err, result) => {
+      console.log("Error", err);
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
+        else res.status(200).json({ message: "Employee logs not found " });
+      } else res.status(401).json({ status: "failed" });
     }
   );
 };
