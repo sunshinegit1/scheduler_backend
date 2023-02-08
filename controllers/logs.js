@@ -84,3 +84,20 @@ exports.getLogsByEmpId = async (req, res) => {
     }
   );
 };
+
+exports.getLogsBySchId = async (req, res) => {
+  data = req.body;
+  db.query(
+    "SELECT * FROM `logs` WHERE sch=?",
+    [
+      req.params.id
+    ],
+    (err, result) => {
+      console.log("Error", err);
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
+        else res.status(200).json({ message: "No Events" });
+      } else res.status(401).json({ status: "failed" });
+    }
+  );
+};
