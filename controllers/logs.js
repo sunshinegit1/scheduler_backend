@@ -19,6 +19,7 @@ exports.createLogs = async (req, res) => {
       {
         sch_id: data.sch_id,
         emp_id: data.emp_id,
+        loc_id: data.loc_id,
         device_lat: data.device_lat,
         device_lon: data.device_lon,
         cur_time: new Date(),
@@ -46,6 +47,7 @@ exports.updateLogs = async (req, res) => {
       {
         sch_id: data.sch_id,
         emp_id: data.emp_id,
+        loc_id: data.loc_id,
         device_lat: data.device_lat,
         device_lon: data.device_lon,
         cur_time: new Date(),
