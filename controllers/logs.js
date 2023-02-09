@@ -1,7 +1,7 @@
 const db = require("../config/connection");
 
 exports.getLogs = async (req, res) => {
-  db.query("select * from logs", (err, result, fiels) => {
+  db.query("SELECT g.*, l.loc_name, e.emp_name FROM logs g, employee e, location l where g.emp_id=e.emp_id and g.loc_id=l.loc_id", (err, result, fiels) => {
     console.log(err);
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
