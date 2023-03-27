@@ -107,7 +107,7 @@ exports.getSchedulesByEmpId = async (req, res) => {
 };
 
 exports.getTimelines = async (req, res) => {
-  db.query("SELECT DATE(s.start_time) as sch_date,e.emp_name,s.start_time as sch_start_time,s.end_time as sch_end_time  FROM schedule s,employee e where s.emp_id=e.emp_id;", (err, result, fiels) => {
+  db.query("SELECT e.emp_name,s.start_time as sch_start_time,s.end_time as sch_end_time  FROM schedule s,employee e where s.emp_id=e.emp_id;", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
       else res.status(200).json({ message: "Scheduled Timelines not found" });
