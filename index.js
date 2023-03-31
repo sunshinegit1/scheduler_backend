@@ -7,6 +7,7 @@ const locRoutes = require('./routes/locRoutes');
 const schRoutes = require('./routes/schRoutes');
 const logsRoutes = require('./routes/logsRoutes');
 const holRoutes = require('./routes/holRoutes');
+const asgnRoutes = require('./routes/asgnRoutes');
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/loc', locRoutes);
 app.use('/sch', schRoutes);
 app.use('/logs', logsRoutes);
 app.use('/hol', holRoutes);
+app.use('/asgn',asgnRoutes);
 
 
 module.exports = app;
