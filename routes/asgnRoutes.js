@@ -7,7 +7,7 @@ const{
 } = require('../controllers/assignment');
 
 router.post('/getAssignmentByEmp', getAssignmentsByEmp);
-router.patch('/updateAssignment', updateAssignment);
+router.post('/updateAssignment', updateAssignment);
 
 
 module.exports = router ;
