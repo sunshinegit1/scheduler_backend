@@ -110,16 +110,20 @@ exports.getTimelines = async (req, res) => {
   var obj = {};
   obj['timelineDates'] = [];
   db.query("SELECT DATE(start_time) as date FROM `schedule` GROUP BY DATE(start_time)", (err, result) => {
-    obj['timelineDates'].push(result);
-  });
-  db.query("SELECT e.emp_name,s.start_time as sch_start_time,s.end_time as sch_end_time  FROM schedule s,employee e where s.emp_id=e.emp_id", (err, result, fiels) => {
-    if (!err) {
-      if (result.length > 0) { 
-        obj['timelines'] = [];
-        obj['timelines'].push(result);
-        res.status(200).send(obj);
-      }
-      else res.status(200).json({ message: "Scheduled Timelines not found" });
-    } else res.status(401).json({ status: "failed" });
+    if(result.length > 0){
+      obj['timelineDates'].push(result);
+    }
+    if(obj['timelineDates'] !=''){
+      db.query("SELECT e.emp_name,s.start_time as sch_start_time,s.end_time as sch_end_time  FROM schedule s,employee e where s.emp_id=e.emp_id", (err, result, fiels) => {
+        if (!err) {
+          if (result.length > 0) { 
+            obj['timelines'] = [];
+            obj['timelines'].push(result);
+            res.status(200).send(obj);
+          }
+          else res.status(200).json({ message: "Scheduled Timelines not found" });
+        } else res.status(401).json({ status: "failed" });
+      });
+    }
   });
 };
