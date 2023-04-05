@@ -1,7 +1,7 @@
 const db = require("../config/connection");
 
 exports.getLogs = async (req, res) => {
-  db.query("SELECT g.*, l.loc_name, e.emp_name FROM logs g, employee e, location l where g.emp_id=e.emp_id and g.loc_id=l.loc_id", (err, result, fiels) => {
+  db.query("SELECT g.*, j.job_name, e.emp_name FROM logs g, employee e, jobs j where g.emp_id=e.emp_id and g.job_id=j.job_id", (err, result, fiels) => {
     console.log(err);
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
@@ -19,7 +19,7 @@ exports.createLogs = async (req, res) => {
       {
         sch_id: data.sch_id,
         emp_id: data.emp_id,
-        loc_id: data.loc_id,
+        job_id: data.job_id,
         device_lat: data.device_lat,
         device_lon: data.device_lon,
         cur_time: new Date(),
@@ -47,7 +47,7 @@ exports.updateLogs = async (req, res) => {
       {
         sch_id: data.sch_id,
         emp_id: data.emp_id,
-        loc_id: data.loc_id,
+        job_id: data.job_id,
         device_lat: data.device_lat,
         device_lon: data.device_lon,
         cur_time: new Date(),

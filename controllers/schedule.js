@@ -3,7 +3,7 @@ const add = require("date-fns/add");
 
 exports.getSchedules = async (req, res) => {
   db.query(
-    "select s.*, l.loc_name, l.color from schedule s, location l where s.loc_id=l.loc_id",
+    "select s.*, j.job_name, j.color from schedule s, jobs j where s.job_id=j.job_id",
     (err, result, fiels) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
@@ -26,7 +26,7 @@ exports.createSchedule = async (req, res) => {
       [
         {
           emp_id: data.emp_id,
-          loc_id: data.loc_id,
+          job_id: data.job_id,
           start_time: data.start_time,
           sch_hours: data.sch_hours,
           end_time: data.end_time,
@@ -54,7 +54,7 @@ exports.updateSchedule = async (req, res) => {
     [
       {
         emp_id: data.emp_id,
-        loc_id: data.loc_id,
+        job_id: data.job_id,
         start_time: data.start_time,
         sch_hours: data.sch_hours,
         end_time: data.end_time,
@@ -99,7 +99,7 @@ exports.deleteschedule = async (req, res) => {
 exports.getSchedulesByEmpId = async (req, res) => {
   data = req.body;
   db.query(
-    "select s.*, l.*,e.* from schedule s, location l, employee e where s.loc_id=l.loc_id and s.emp_id=e.emp_id and s.emp_id = ?",
+    "select s.*, j.*,e.* from schedule s, jobs j, employee e where s.job_id=j.job_id and s.emp_id=e.emp_id and s.emp_id = ?",
     [req.params.id],
     (err, result) => {
       console.log("Error", err);
