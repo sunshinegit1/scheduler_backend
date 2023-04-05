@@ -1,24 +1,24 @@
 const db = require("../config/connection");
 
-exports.getLocations = async (req, res) => {
-  db.query("select * from location", (err, result, fiels) => {
+exports.getJobs = async (req, res) => {
+  db.query("select * from jobs", (err, result, fiels) => {
     if (!err) {
       if (result.length > 0) res.status(200).send(result);
-      else res.status(200).json({ message: "Locations not found" });
+      else res.status(200).json({ message: "Jobs not found" });
     } else res.status(401).json({ status: "failed" });
   });
 };
 
-exports.createLocation = async (req, res) => {
+exports.createJob = async (req, res) => {
   data = req.body;
   db.query(
-    "INSERT INTO `location` SET ? ",
+    "INSERT INTO `jobs` SET ? ",
     [
       {
-        loc_name: data.loc_name,
-        loc_address: data.loc_address,
-        loc_lat: data.loc_lat,
-        loc_lon: data.loc_lon, 
+        job_name: data.job_name,
+        job_address: data.job_address,
+        job_lat: data.job_lat,
+        job_lon: data.job_lon, 
         color: data.color       
       },
     ],
@@ -28,23 +28,23 @@ exports.createLocation = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Location added successfully",
+            message: "Job added successfully",
           });
       } else res.status(401).json({ status: "failed" });
     }
   );
 };
 
-exports.updateLocation = async (req, res) => {
+exports.updateJob = async (req, res) => {
   data = req.body;
   db.query(
-    "update location set ? where loc_id = ? ",
+    "update jobs set ? where job_id = ? ",
     [
       {
-        loc_name: data.loc_name,
-        loc_address: data.loc_address,
-        loc_lat: data.loc_lat,
-        loc_lon: data.loc_lon,
+        job_name: data.job_name,
+        job_address: data.job_address,
+        job_lat: data.job_lat,
+        job_lon: data.job_lon,
         color: data.color,
         status: data.status,
         updated_date: new Date()
@@ -57,17 +57,17 @@ exports.updateLocation = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Location updated successfully",
+            message: "Jobs updated successfully",
           });
       else res.status(401).json({ status: "failed" });
     }
   );
 };
 
-exports.deleteLocation = async (req, res) => {
+exports.deleteJobs = async (req, res) => {
   data = req.body;
   db.query(
-    "update location set ? where loc_id = ? ",
+    "update Jobs set ? where Job_id = ? ",
     [
       {       
         status: 'InActive',
@@ -81,7 +81,7 @@ exports.deleteLocation = async (req, res) => {
           .status(200)
           .json({
             status: "success",
-            message: "Location is InActive Successfully",
+            message: "Jobs is InActive Successfully",
           });
       else res.status(401).json({ status: "failed" });
     }

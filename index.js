@@ -3,7 +3,7 @@ const cors = require('cors');
 const connection = require('./config/connection');
 
 const empRoutes = require('./routes/empRoutes');
-const locRoutes = require('./routes/locRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 const schRoutes = require('./routes/schRoutes');
 const logsRoutes = require('./routes/logsRoutes');
 const holRoutes = require('./routes/holRoutes');
@@ -18,7 +18,7 @@ app.use(express.json());
 
 //table Routes
 app.use('/emp', empRoutes);
-app.use('/loc', locRoutes);
+app.use('/job', jobRoutes);
 app.use('/sch', schRoutes);
 app.use('/logs', logsRoutes);
 app.use('/hol', holRoutes);
@@ -28,4 +28,4 @@ app.use('/set',setRoutes);
 
 module.exports = app;
 
-// const req = require('express/lib/request');
+
