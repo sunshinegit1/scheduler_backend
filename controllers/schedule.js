@@ -122,7 +122,7 @@ exports.getTimelines = async (req, res) => {
       }
       if (obj["timelineDates"] != "") {
         db.query(
-          "SELECT e.emp_name,s.start_time as sch_start_time,s.end_time as sch_end_time  FROM schedule s,employee e where s.emp_id=e.emp_id",
+          "SELECT e.emp_name,s.start_time as sch_start_time,s.end_time as sch_end_time  FROM schedule s,employee e where s.emp_id=e.emp_id order by s.start_time",
           (err, result, fiels) => {
             if (!err) {
               if (result.length > 0) {
