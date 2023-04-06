@@ -99,12 +99,11 @@ exports.getLogsBySchId = async (req, res) => {
 
 exports.getFilterLogs = async (req, res) => {
   data = req.body;
-  db.query(
-    "select * from logs where cur_time BETWEEN ? and ? and job_id in (?)",
+  db.query("select g.*,j.job_name, e.emp_name from logs g, employee e, jobs j where g.emp_id=e.emp_id and g.job_id=j.job_id and cur_time BETWEEN ? and ? and g.job_id in (?)",
     [
       data.start_date + " 00:00:00",
       data.end_date + " 23:59:59",
-      [...data.job_id],
+      [...data.job_id]
     ],
     (err, result) => {
       if (!err) {
