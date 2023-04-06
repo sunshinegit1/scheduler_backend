@@ -115,3 +115,29 @@ exports.getFilterLogs = async (req, res) => {
     }
   );
 };
+exports.getLoginDetails=async(req,res)=>{
+  
+  db.query("select j.job_name,e.emp_name,g.cur_time,g.status from employee e,jobs j,logs g where g.job_id=g.job_id and e.emp_id=g.emp_id and g.status='log_in'",
+  (err,result)=>{
+    if(!err){
+      if (result.length > 0) res.status(200).send(result);
+        else res.status(200).json({ message: "data not fouund" });
+      } else res.status(401).json({ status: "failed" });
+      
+    }
+  );
+  }
+  exports.getLogoutDetails=async(req,res)=>{
+    
+    db.query("select j.job_name,e.emp_name,g.cur_time,g.status from employee e,jobs j,logs g where g.job_id=g.job_id and e.emp_id=g.emp_id and g.status='log_out'",
+    (err,result)=>{
+      if(!err){
+        if (result.length > 0) res.status(200).send(result);
+          else res.status(200).json({ message: "data not fouund" });
+        } else res.status(401).json({ status: "failed" });
+        
+      }
+    );
+    }
+
+

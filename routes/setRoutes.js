@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { createSettings, getSettings } = require("../controllers/settings");
+const { updateSettings, getSettings } = require("../controllers/settings");
 
 router.get("/getSettings", getSettings);
-router.post("/createSettings", createSettings);
+router.patch("/updateSettings", updateSettings);
 
 module.exports = router;

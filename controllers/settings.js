@@ -11,10 +11,10 @@ exports.getSettings = async (req, res) => {
   });
 };
 
-exports.createSettings = async (req, res) => {
+exports.updateSettings = async (req, res) => {
   data = req.body;
   db.query(
-    "INSERT INTO `settings` set ?",
+    "update `settings` set ? where set_id=1",
     [
       {
         cname: data.cname,
@@ -25,7 +25,7 @@ exports.createSettings = async (req, res) => {
     ],
     (err, result) => {
       if (!err) {
-        res.status(200).json({ message: "settings created successfully" });
+        res.status(200).json({ message: "settings updated successfully" });
       } else res.status(401).json({ status: "failed" });
     }
   );
