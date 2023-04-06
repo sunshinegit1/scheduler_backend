@@ -15,12 +15,38 @@ exports.getSchedules = async (req, res) => {
 
 exports.createSchedule = async (req, res) => {
   data = req.body;
-  for (k = 0; k < data.repeat; k++) {
-    count = 1;
-    if (k != 0) {
-      data.start_time = add(new Date(data.start_time), { days: 1 });
-      data.end_time = add(new Date(data.end_time), { days: 1 });
+  if(data.repeat>0){
+    for (k = 0; k < data.repeat; k++) {
+      count = 1;
+      if (k != 0) {
+        data.start_time = add(new Date(data.start_time), { days: 1 });
+        data.end_time = add(new Date(data.end_time), { days: 1 });
+      }
+      db.query(
+        "INSERT INTO `schedule` SET ? ",
+        [
+          {
+            emp_id: data.emp_id,
+            job_id: data.job_id,
+            start_time: data.start_time,
+            sch_hours: data.sch_hours,
+            end_time: data.end_time,
+          },
+        ],
+        (err, result) => {
+          if (!err) {
+            count++;
+            if (count == data.repeat) {
+              res.status(200).json({
+                status: "success",
+                message: "Schedules added successfully",
+              });
+            }
+          } else res.status(401).json({ status: "failed" });
+        }
+      );
     }
+  } else {
     db.query(
       "INSERT INTO `schedule` SET ? ",
       [
@@ -29,21 +55,14 @@ exports.createSchedule = async (req, res) => {
           job_id: data.job_id,
           start_time: data.start_time,
           sch_hours: data.sch_hours,
-          end_time: data.end_time,
+          end_time: data.end_time        
         },
       ],
       (err, result) => {
-        if (!err) {
-          count++;
-          if (count == data.repeat) {
-            res.status(200).json({
-              status: "success",
-              message: "Schedule added successfully",
-            });
-          }
-        } else res.status(401).json({ status: "failed" });
-      }
-    );
+        if(!err){
+          res.status(200).json({status:"success",message:"Schedule added successfully"})
+        }else{res.status(401).json({status:"failed"})};
+      })
   }
 };
 
