@@ -30,7 +30,7 @@ exports.updateLeave= async(req,res)=>{
 }
 
 exports.getLeaves = async (req, res) => {
-    db.query("select * from leaves", (err, result, fields) => {
+    db.query("SELECT l.*,e.emp_name from leaves l,employee e where l.emp_id=e.emp_id", (err, result, fields) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
         else res.status(200).json({ message: "leaves not found" });
