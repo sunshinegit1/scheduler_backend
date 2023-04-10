@@ -6,7 +6,8 @@ exports.createLeave= async(req,res)=>{
         emp_id:data.emp_id,
         lev_desc:data.lev_desc,
         lev_date:data.lev_date,
-        lev_status:data.lev_status,
+        lev_status:"pending"
+
 
     }],(err,result)=>{
         if(!err){

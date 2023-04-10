@@ -25,7 +25,7 @@ exports.updateSettings = async (req, res) => {
     ],
     (err, result) => {
       if (!err) {
-        res.status(200).json({ message: "settings updated successfully" });
+        res.status(200).json({ status:"success",message: "settings updated successfully" });
       } else res.status(401).json({ status: "failed" });
     }
   );
