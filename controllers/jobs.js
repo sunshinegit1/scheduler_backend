@@ -20,6 +20,7 @@ exports.createJob = async (req, res) => {
         job_lat: data.job_lat,
         job_lon: data.job_lon,
         color: data.color,
+        radius:data.radius
       },
     ],
     (err, result) => {
@@ -44,7 +45,9 @@ exports.updateJob = async (req, res) => {
         job_lat: data.job_lat,
         job_lon: data.job_lon,
         color: data.color,
+        radius:data.radius,
         status: data.status,
+
         updated_date: new Date(),
       },
       req.params.id,
@@ -95,6 +98,7 @@ exports.createJobByAssign = async (req, res) => {
               job_address: data.job_address,
               job_lat: data.job_lat,
               job_lon: data.job_lon,
+              radius:data.radius,
               color: data.color,
             },
           ],
@@ -116,6 +120,7 @@ exports.createJobByAssign = async (req, res) => {
               job_address: data.job_address,
               job_lat: data.job_lat,
               job_lon: data.job_lon,
+              radius:data.radius,
               color: data.color,
             },
           ],
@@ -174,8 +179,7 @@ exports.createJobByAssign = async (req, res) => {
                 } else res.status(401).json({ status: "failed" });
               });
             } else res.status(401).json({ status: "failed" });
-          }
-        );
+          });
       }
     } else res.status(401).json({ status: "failed" });
   });

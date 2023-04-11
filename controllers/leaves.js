@@ -11,7 +11,7 @@ exports.createLeave= async(req,res)=>{
 
     }],(err,result)=>{
         if(!err){
-            res.status(200).json({message:"Leave created successfully"})
+            res.status(200).json({status:"success",message:"Leave created successfully"})
         }else{res.status(401).json({status:"failed"});
     console.log(err);}
     })
@@ -23,7 +23,7 @@ exports.updateLeave= async(req,res)=>{
         if(!err){
             if (!err)
         res
-          .status(200) .json({ status: "success",message: "Leaves updated successfully",
+          .status(200) .json({ status: "success",message: "Leave Status Changed successfully",
           });
       else res.status(401).json({ status: "failed" });
     }
