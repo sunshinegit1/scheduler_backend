@@ -9,7 +9,8 @@ const logsRoutes = require('./routes/logsRoutes');
 const holRoutes = require('./routes/holRoutes');
 const asgnRoutes = require('./routes/asgnRoutes');
 const setRoutes=require('./routes/setRoutes');
-const levRoutes=require('./routes/levRoutes')
+const levRoutes=require('./routes/levRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/hol', holRoutes);
 app.use('/asgn',asgnRoutes);
 app.use('/set',setRoutes);
 app.use('/lev',levRoutes)
+app.use('/user', userRoutes);
 
 
 module.exports = app;
