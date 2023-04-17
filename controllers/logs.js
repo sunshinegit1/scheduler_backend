@@ -99,12 +99,13 @@ exports.getLogsBySchId = async (req, res) => {
 
 exports.getFilterLogs = async (req, res) => {
   data = req.body;
-  db.query("select g.*,j.job_name, e.emp_name from logs g, employee e, jobs j where g.emp_id=e.emp_id and g.job_id=j.job_id and cur_time BETWEEN ? and ? and g.job_id in (?) and g.emp_id in (?)",
+  db.query(
+    "select g.*,j.job_name, e.emp_name from logs g, employee e, jobs j where g.emp_id=e.emp_id and g.job_id=j.job_id and cur_time BETWEEN ? and ? and g.job_id in (?) and g.emp_id in (?)",
     [
       data.start_date + " 00:00:00",
       data.end_date + " 23:59:59",
       [...data.job_id],
-      [...data.emp_id]
+      [...data.emp_id],
     ],
     (err, result) => {
       if (!err) {
@@ -116,51 +117,48 @@ exports.getFilterLogs = async (req, res) => {
     }
   );
 };
-exports.getLoginDetails=async(req,res)=>{
-  
-  db.query("select j.job_name,e.emp_name,g.cur_time,g.status from employee e,jobs j,logs g where j.job_id=g.job_id and e.emp_id=g.emp_id and g.status='log_in'",
-  (err,result)=>{
-    if(!err){
-      if (result.length > 0) res.status(200).send(result);
+exports.getLoginDetails = async (req, res) => {
+  db.query(
+    "select j.job_name,e.emp_name,g.cur_time,g.status from employee e,jobs j,logs g where j.job_id=g.job_id and e.emp_id=g.emp_id and g.status='log_in'",
+    (err, result) => {
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
         else res.status(200).json({ message: "data not fouund" });
       } else res.status(401).json({ status: "failed" });
-      
     }
   );
-  }
-  exports.getLogoutDetails=async(req,res)=>{
-    
-    db.query("select j.job_name,e.emp_name,g.cur_time,g.status from employee e,jobs j,logs g where j.job_id=g.job_id and e.emp_id=g.emp_id and g.status='log_out'",
-    (err,result)=>{
-      if(!err){
+};
+exports.getLogoutDetails = async (req, res) => {
+  db.query(
+    "select j.job_name,e.emp_name,g.cur_time,g.status from employee e,jobs j,logs g where j.job_id=g.job_id and e.emp_id=g.emp_id and g.status='log_out'",
+    (err, result) => {
+      if (!err) {
         if (result.length > 0) res.status(200).send(result);
-          else res.status(200).json({ message: "data not fouund" });
-        } else res.status(401).json({ status: "failed" });
-        
-      }
-    );
+        else res.status(200).json({ message: "data not fouund" });
+      } else res.status(401).json({ status: "failed" });
     }
+  );
+};
 
-exports.getLatestLogs= async(req,res)=>{
-
-  db.query("SELECT * from logs where cur_time IN (SELECT max(cur_time) from logs GROUP by emp_id)",(err,result)=>{
-    if(!err){
-         if (result.length > 0) res.status(200).send(result);
+exports.getLatestLogs = async (req, res) => {
+  db.query(
+    "SELECT e.emp_id,e.emp_name, x.* from (SELECT e.emp_id as e_id, g.* from logs g,employee e where cur_time IN (SELECT max(cur_time) from logs GROUP by emp_id) and e.emp_id=g.emp_id) x RIGHT JOIN employee e on e.emp_id=x.e_id",
+    (err, result) => {
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
         else res.status(200).json({ message: "Logs not found" });
-      
-
-    } else res.status(401).json({ status: "failed" });
-  })
-}
-exports.getWorkedLogs= async(req,res)=>{
-  
-  db.query("SELECT e.emp_name,g.sch_id, SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', 1) AS login_time,SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', -1) AS logout_time FROM logs g,employee e where e.emp_id=g.emp_id GROUP BY g.sch_id",(err,result)=>{
-
-    if(!err){
-      if(result.length>0) res.status(200).send(result);
-      else res.status.json({message:"logs not found"});
-    }else res.status(401).json({status:"failed"})
-  })
-}
-
-
+      } else res.status(401).json({ status: "failed" });
+    }
+  );
+};
+exports.getWorkedLogs = async (req, res) => {
+  db.query(
+    "SELECT e.emp_name,g.sch_id, SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', 1) AS login_time,SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', -1) AS logout_time FROM logs g,employee e where e.emp_id=g.emp_id GROUP BY g.sch_id",
+    (err, result) => {
+      if (!err) {
+        if (result.length > 0) res.status(200).send(result);
+        else res.status.json({ message: "logs not found" });
+      } else res.status(401).json({ status: "failed" });
+    }
+  );
+};
