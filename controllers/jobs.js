@@ -184,3 +184,15 @@ exports.createJobByAssign = async (req, res) => {
     } else res.status(401).json({ status: "failed" });
   });
 };
+exports.getDistances= async(req,res)=>{
+  data=req.body
+  db.query("SELECT DISTINCT(x.job_id), x.distance,x.job_name FROM ( SELECT ((((acos(sin((?*pi()/180))*sin((`job_lat`*pi()/180))+cos((?*pi()/180))*cos((`job_lat`*pi()/180)) * cos(((?-`job_lon`)*pi()/180))))*180/pi())*60*1.1515*1.609344)) as distance,job_id,job_name FROM jobs) x,jobs j WHERE x.distance<(j.radius/1000);",[data.lat,data.lat,data.long],(err,result)=>{
+      
+  
+    if(!err){
+        if(result.length>0) res.status(200).send(result)
+        else res.status(200).json({message:"distance not found"})
+      }else res.status(401).json({message:"failed"})
+  })
+  
+}

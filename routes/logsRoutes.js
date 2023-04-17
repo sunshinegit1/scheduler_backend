@@ -10,6 +10,8 @@ const{
     getFilterLogs,
     getLoginDetails,
     getLogoutDetails,
+    getLatestLogs,
+    getWorkedLogs
 } = require('../controllers/logs');
 
 router.get('/getLogs', getLogs);
@@ -20,6 +22,7 @@ router.get('/getLogsBySchId/:id', getLogsBySchId);
 router.get('/getLoginDetails',getLoginDetails);
 router.get('/getLogoutDetails',getLogoutDetails);
 router.post('/getFilterLogs',getFilterLogs);
-
+router.get('/getLatestLogs',getLatestLogs);
+router.get('/getWorkedLogs',getWorkedLogs)
 
 module.exports = router ;

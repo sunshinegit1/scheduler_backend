@@ -141,4 +141,26 @@ exports.getLoginDetails=async(req,res)=>{
     );
     }
 
+exports.getLatestLogs= async(req,res)=>{
+
+  db.query("SELECT * from logs where cur_time IN (SELECT max(cur_time) from logs GROUP by emp_id)",(err,result)=>{
+    if(!err){
+         if (result.length > 0) res.status(200).send(result);
+        else res.status(200).json({ message: "Logs not found" });
+      
+
+    } else res.status(401).json({ status: "failed" });
+  })
+}
+exports.getWorkedLogs= async(req,res)=>{
+  
+  db.query("SELECT e.emp_name,g.sch_id, SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', 1) AS login_time,SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', -1) AS logout_time FROM logs g,employee e where e.emp_id=g.emp_id GROUP BY g.sch_id",(err,result)=>{
+
+    if(!err){
+      if(result.length>0) res.status(200).send(result);
+      else res.status.json({message:"logs not found"});
+    }else res.status(401).json({status:"failed"})
+  })
+}
+
 
