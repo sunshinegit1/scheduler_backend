@@ -141,20 +141,18 @@ exports.getLogoutDetails = async (req, res) => {
 };
 
 exports.getLatestLogs = async (req, res) => {
-  db.query(
-    "SELECT e.emp_id,e.emp_name, x.* from (SELECT e.emp_id as e_id, g.* from logs g,employee e where cur_time IN (SELECT max(cur_time) from logs GROUP by emp_id) and e.emp_id=g.emp_id) x RIGHT JOIN employee e on e.emp_id=x.e_id",
+  db.query("SELECT e.emp_id,e.emp_name,x.cur_time,x.status,x.device_lat,x.device_lon,x.sch_id,x.log_id from (SELECT em.emp_id as e_id, g.* from logs g,employee em where cur_time IN (SELECT max(cur_time) from logs GROUP by emp_id) and em.emp_id=g.emp_id) x RIGHT JOIN employee e on e.emp_id=x.e_id",
     (err, result) => {
       if (!err) {
-        if (result.length > 0) res.status(200).send(result);
+        if (result.length > 0) res.status(200).json(result);
         else res.status(200).json({ message: "Logs not found" });
       } else res.status(401).json({ status: "failed" });
     }
   );
 };
 exports.getWorkedLogs = async (req, res) => {
-  db.query(
-    "SELECT e.emp_name,g.sch_id, SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', 1) AS login_time,SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', -1) AS logout_time FROM logs g,employee e where e.emp_id=g.emp_id GROUP BY g.sch_id",
-    (err, result) => {
+  db.query("SELECT e.emp_name,g.sch_id, SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', 1) AS login_time,SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT g.cur_time SEPARATOR ','), ',', -1) AS logout_time FROM logs g,employee e where e.emp_id=g.emp_id GROUP BY g.sch_id",
+  (err, result) => {
       if (!err) {
         if (result.length > 0) res.status(200).send(result);
         else res.status.json({ message: "logs not found" });
