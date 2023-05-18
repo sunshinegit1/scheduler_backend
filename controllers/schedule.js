@@ -118,7 +118,7 @@ exports.deleteschedule = async (req, res) => {
 exports.getSchedulesByEmpId = async (req, res) => {
   data = req.body;
   db.query(
-    "select s.*, j.*,e.* from schedule s, jobs j, employee e where s.job_id=j.job_id and s.emp_id=e.emp_id and s.emp_id = ?",
+    "select s.*, j.*,e.* from schedule s, jobs j, employee e where s.job_id=j.job_id and s.emp_id=e.emp_id and s.emp_id = ? order by s.start_time desc",
     [req.params.id],
     (err, result) => {
       console.log("Error", err);
