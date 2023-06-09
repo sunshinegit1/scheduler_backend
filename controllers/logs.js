@@ -141,7 +141,7 @@ exports.getLogoutDetails = async (req, res) => {
 };
 
 exports.getLatestLogs = async (req, res) => {
-  db.query("SELECT e.emp_id,e.emp_name,x.cur_time,x.status,x.device_lat,x.device_lon,x.sch_id,x.log_id,x.job_id from (SELECT em.emp_id as e_id, g.* from logs g,employee em where cur_time IN (SELECT max(cur_time) from logs GROUP by emp_id) and em.emp_id=g.emp_id) x RIGHT JOIN employee e on e.emp_id=x.e_id",
+  db.query("SELECT e.emp_id,e.emp_name,x.cur_time,x.status,x.device_lat,x.device_lon,x.sch_id,x.log_id,x.job_id,x.job_name from (SELECT em.emp_id as e_id, g.*,j.job_name from logs g,employee em,jobs j where cur_time IN (SELECT max(cur_time) from logs GROUP by emp_id) and em.emp_id=g.emp_id and g.job_id=j.job_id) x RIGHT JOIN (employee e) on e.emp_id=x.e_id",
     (err, result) => {
       if (!err) {
         if (result.length > 0) res.status(200).json(result);

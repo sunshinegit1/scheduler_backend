@@ -1,5 +1,6 @@
 const db = require("../config/connection");
 const add = require("date-fns/add");
+const notification = require('./notifications')
 
 exports.getSchedules = async (req, res) => {
   db.query(
@@ -12,6 +13,7 @@ exports.getSchedules = async (req, res) => {
     }
   );
 };
+
 
 exports.createSchedule = async (req, res) => {
   data = req.body;
@@ -33,10 +35,11 @@ exports.createSchedule = async (req, res) => {
             end_time: data.end_time,
           },
         ],
-        (err, result) => {
+        async (err, result) => {
           if (!err) {
             count++;
             if (count == data.repeat) {
+              notification.sendNotifications(data.job_name,data.emp_id)
               res.status(200).json({
                 status: "success",
                 message: "Schedules added successfully",
@@ -60,6 +63,7 @@ exports.createSchedule = async (req, res) => {
       ],
       (err, result) => {
         if(!err){
+          notification.sendNotifications(data.job_name,data.emp_id)
           res.status(200).json({status:"success",message:"Schedule added successfully"})
         }else{res.status(401).json({status:"failed"})};
       })
@@ -134,7 +138,26 @@ exports.getTimelines = async (req, res) => {
   var obj = {};
   obj["timelineDates"] = [];
   db.query(
-    "SELECT DATE(start_time) as date FROM `schedule` GROUP BY DATE(start_time)",
+    // "SELECT DATE(start_time) as date FROM `schedule` GROUP BY DATE(start_time)",
+    `SELECT date_field as date
+    FROM
+    (
+        SELECT
+            MAKEDATE(YEAR(NOW()),1) +
+            INTERVAL (MONTH(NOW())-1) MONTH +
+            INTERVAL daynum DAY date_field
+        FROM
+        (
+            SELECT t*10+u daynum
+            FROM
+                (SELECT 0 t UNION SELECT 1 UNION SELECT 2 UNION SELECT 3) A,
+                (SELECT 0 u UNION SELECT 1 UNION SELECT 2 UNION SELECT 3
+                UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7
+                UNION SELECT 8 UNION SELECT 9) B
+            ORDER BY daynum
+        ) AA
+    ) AAA
+    WHERE MONTH(date_field) = MONTH(NOW());`,
     (err, result) => {
       if (result.length > 0) {
         obj["timelineDates"].push(result);
